@@ -10,6 +10,35 @@ echo      YouTube Playlist Downloader
 echo ==========================================
 echo.
 
+:: --- Pre-flight: required tools must sit next to this script ---
+if not exist "%DIR%\yt-dlp.exe" (
+    echo ERROR: yt-dlp.exe was not found in this folder:
+    echo   %DIR%
+    echo Re-download it from https://github.com/yt-dlp/yt-dlp/releases
+    pause
+    exit /b 1
+)
+if not exist "%DIR%\ffmpeg.exe" (
+    echo ERROR: ffmpeg.exe was not found in this folder:
+    echo   %DIR%
+    echo It is required to merge video and audio into MP4. Download it once from
+    echo   https://github.com/BtbN/FFmpeg-Builds/releases
+    echo and copy ffmpeg.exe here. See the README "Requirements" section.
+    pause
+    exit /b 1
+)
+
+:: Deno is optional: it helps yt-dlp solve YouTube's JS challenges.
+:: Use it only when present so a fresh setup still works.
+set "JSRT="
+if exist "%DIR%\deno.exe" (
+    set "JSRT=--js-runtimes "deno:%DIR%\deno.exe""
+) else (
+    echo NOTE: deno.exe not found - continuing without it. Downloads may be
+    echo less reliable. See the README "Requirements" section to add it.
+    echo.
+)
+
 :: If a URL was passed as argument use it, otherwise prompt.
 :: Use %* (the whole argument tail) instead of %~1: cmd.exe treats '=' as a
 :: token delimiter for %1, so an unquoted URL like ...list=ABC gets truncated
@@ -21,6 +50,7 @@ if not defined URL set /p "URL=Paste YouTube Playlist URL: "
 
 if not defined URL (
     echo No URL provided. Exiting.
+    pause
     exit /b 1
 )
 
@@ -35,7 +65,7 @@ echo.
     -f "bv*+ba/b" ^
     --merge-output-format mp4 ^
     --ffmpeg-location "%DIR%" ^
-    --js-runtimes "deno:%DIR%\deno.exe" ^
+    %JSRT% ^
     -o "%DIR%\%%(playlist_title)s\%%(playlist_index)s - %%(title)s.%%(ext)s" ^
     --progress ^
     --no-continue ^
@@ -46,6 +76,7 @@ if %ERRORLEVEL%==0 (
     echo Playlist download complete! Files saved to: %DIR%
 ) else (
     echo.
-    echo Something went wrong. Check the URL and try again.
+    echo Something went wrong. See the messages above for the reason.
 )
 endlocal
+pause

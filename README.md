@@ -76,7 +76,7 @@ The scripts keep a record of everything downloaded (`downloaded.txt` for video, 
 | `'ffmpeg' not found` or audio conversion fails | Make sure `ffmpeg.exe` is in the same folder as the scripts |
 | Downloads suddenly stop working / "Sign in to confirm" errors | YouTube changed something. Update the engine: open a terminal in this folder and run `yt-dlp.exe -U`. Also make sure `deno.exe` is present |
 | A playlist item is skipped but you don't have the file | It's in the download record — see the section above |
-| Window closes instantly on error | Run the script from a terminal (cmd) instead of double-clicking so you can read the error message |
+| `ffmpeg.exe was not found` message | The scripts check for FFmpeg before starting — follow the on-screen link, or see **Requirements** above |
 | URL with `&` behaves strangely | Quote the URL: `download.bat "https://...watch?v=abc&t=30"` |
 
 ## Updating yt-dlp
