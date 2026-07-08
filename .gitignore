@@ -1,0 +1,20 @@
+# Large binaries users download themselves (exceed GitHub's 100MB limit)
+ffmpeg.exe
+ffprobe.exe
+ffplay.exe
+deno.exe
+
+# Download records (machine-specific)
+downloaded.txt
+downloaded_audio.txt
+
+# Downloaded media
+*.mp3
+*.mp4
+*.webm
+*.m4a
+*.part
+*.ytdl
+*.webp
+*.png
+*.jpg

@@ -1,0 +1,5 @@
+# Batch scripts must keep CRLF line endings to run correctly on Windows
+*.bat text eol=crlf
+
+# Binaries
+*.exe binary
