@@ -3,6 +3,10 @@ ffmpeg.exe
 ffprobe.exe
 ffplay.exe
 deno.exe
+# Linux binaries users download themselves
+ffmpeg
+ffprobe
+deno
 
 # Download records (machine-specific)
 downloaded.txt

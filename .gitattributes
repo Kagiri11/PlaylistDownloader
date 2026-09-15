@@ -3,3 +3,6 @@
 
 # Binaries
 *.exe binary
+
+# Shell scripts must keep LF line endings to run correctly on Linux/macOS
+*.sh text eol=lf
