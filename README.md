@@ -99,7 +99,7 @@ On Linux, downloads are saved in your **Music folder** (`~/Music`) instead of th
 
 ### How audio files are named
 
-Song and artist names come from YouTube Music's track info when a video has it. Otherwise they are read from the video title, which works for the usual `Artist - Song (Official Video) ft. Other Artist` style. Extras like `(Official Video)`, `(Audio)` or `[Lyrics]` are removed, while things like `(Remix)` are kept. The same cleaned names are written into the MP3's title and artist tags. At most two featured artists are kept, because YouTube Music sometimes lists songwriters as artists.
+Song and artist names come from YouTube Music's track info when a video has it. Otherwise they are read from the video title, which works for the usual `Artist - Song (Official Video) ft. Other Artist` style. Extras like `(Official Video)`, `(Audio)` or `[Lyrics]` are removed, while things like `(Remix)` are kept. The same cleaned names are written into the MP3's title and artist tags. At most two featured artists are kept, because YouTube Music sometimes lists songwriters as artists. If YouTube Music repeats the main artist in the featured list, the repeat is dropped.
 
 Titles that don't follow `Artist - Song` fall back to the cleaned title (with no artist). If an uploader writes `Song - Artist`, the two end up swapped.
 
