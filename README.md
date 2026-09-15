@@ -57,6 +57,40 @@ download_playlist_audio.bat https://www.youtube.com/playlist?list=XXXXXXXXXX
 
 > Note: if the URL contains an `&` (e.g. `watch?v=...&list=...`), you must quote it — otherwise the shell treats everything after `&` as a separate command.
 
+## One command for Windows, Linux and macOS
+
+If Python 3 is installed, `downloader.py` detects your operating system and runs the matching script: the `.bat` files on Windows, the `.sh` files on Linux and macOS. Each OS still needs the tools listed in its own Requirements section.
+
+```bash
+python downloader.py                                   # menu: video / playlist / audio
+python downloader.py audio "https://www.youtube.com/playlist?list=XXXXXXXXXX"
+```
+
+Modes: `video` (single video), `playlist` (playlist as MP4), `audio` (playlist as MP3). Leave out the URL to be prompted for one. On Linux, use `python3` if `python` isn't available.
+
+## Linux
+
+The `.sh` scripts do the same thing as the `.bat` files: `download.sh`, `download_playlist.sh` and `download_playlist_audio.sh`.
+
+### Requirements
+
+Each script looks for its tools **next to the script first**, then on your `PATH`.
+
+1. **yt-dlp** (required) — `pipx install yt-dlp`, or download the `yt-dlp` Linux binary from [yt-dlp releases](https://github.com/yt-dlp/yt-dlp/releases) into this folder and `chmod +x yt-dlp`. Distro packages are often out of date, which breaks YouTube downloads.
+2. **FFmpeg** (required) — `sudo apt install ffmpeg` (or your distro's equivalent)
+3. **Deno** (recommended) — `curl -fsSL https://deno.land/install.sh | sh`, or put the `deno` binary in this folder. Needs a recent yt-dlp that supports `--js-runtimes`; older versions skip it with a note.
+
+### How to use
+
+```bash
+chmod +x *.sh        # once
+./download_playlist_audio.sh "https://www.youtube.com/playlist?list=XXXXXXXXXX"
+```
+
+Run without a URL to be prompted for one. Always quote URLs — `&` and `?` are special characters in the shell.
+
+Output folders and download records (`downloaded.txt`, `downloaded_audio.txt`) work the same as on Windows. To update yt-dlp, run `pipx upgrade yt-dlp`, or `./yt-dlp -U` for the standalone binary.
+
 ## Where do my files go?
 
 - **Single videos** → saved directly in this folder as `Title.mp4`
