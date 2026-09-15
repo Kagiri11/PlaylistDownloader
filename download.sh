@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 set -u
 
-# Directory this script lives in (downloads and records go here)
+# Directory this script lives in (download records go here)
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Downloaded files are saved in your Music folder
+OUT="$HOME/Music"
 
 echo "=========================================="
 echo "       YouTube Best Quality Downloader"
@@ -67,20 +70,22 @@ echo "Downloading best quality video..."
 echo "URL: $URL"
 echo
 
+mkdir -p "$OUT"
+
 "$YTDLP" \
     --no-playlist \
     --download-archive "$DIR/downloaded.txt" \
     -f "bv*+ba/b" \
     --merge-output-format mp4 \
     "${ARGS[@]}" \
-    -o "$DIR/%(title)s.%(ext)s" \
+    -o "$OUT/%(title)s.%(ext)s" \
     --progress \
     "$URL"
 STATUS=$?
 
 echo
 if [ "$STATUS" -eq 0 ]; then
-    echo "Download complete! File saved to: $DIR"
+    echo "Download complete! File saved to: $OUT"
 else
     echo "Something went wrong. See the messages above for the reason."
 fi

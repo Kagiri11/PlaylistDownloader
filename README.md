@@ -89,7 +89,7 @@ chmod +x *.sh        # once
 
 Run without a URL to be prompted for one. Always quote URLs — `&` and `?` are special characters in the shell.
 
-Output folders and download records (`downloaded.txt`, `downloaded_audio.txt`) work the same as on Windows. To update yt-dlp, run `pipx upgrade yt-dlp`, or `./yt-dlp -U` for the standalone binary.
+On Linux, downloads are saved in your **Music folder** (`~/Music`) instead of the script folder, with the same file and playlist-folder names as on Windows. The download records (`downloaded.txt`, `downloaded_audio.txt`) stay next to the scripts. To update yt-dlp, run `pipx upgrade yt-dlp`, or `./yt-dlp -U` for the standalone binary.
 
 ## Where do my files go?
 
@@ -99,7 +99,7 @@ Output folders and download records (`downloaded.txt`, `downloaded_audio.txt`) w
 
 ### How audio files are named
 
-Song and artist names come from YouTube Music's track info when a video has it. Otherwise they are read from the video title, which works for the usual `Artist - Song (Official Video) ft. Other Artist` style. Extras like `(Official Video)`, `(Audio)` or `[Lyrics]` are removed, while things like `(Remix)` are kept. The same cleaned names are written into the MP3's title and artist tags. At most two featured artists are kept, because YouTube Music sometimes lists songwriters as artists.
+Song and artist names come from YouTube Music's track info when a video has it. Otherwise they are read from the video title, which works for the usual `Artist - Song (Official Video) ft. Other Artist` style. Extras like `(Official Video)`, `(Audio)` or `[Lyrics]` are removed, while things like `(Remix)` are kept. The same cleaned names are written into the MP3's title and artist tags. At most two featured artists are kept, because YouTube Music sometimes lists songwriters as artists. If YouTube Music repeats the main artist in the featured list, the repeat is dropped.
 
 Titles that don't follow `Artist - Song` fall back to the cleaned title (with no artist). If an uploader writes `Song - Artist`, the two end up swapped.
 

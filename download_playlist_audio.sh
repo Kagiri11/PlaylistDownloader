@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 set -u
 
-# Directory this script lives in (downloads and records go here)
+# Directory this script lives in (download records go here)
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Downloaded files are saved in your Music folder
+OUT="$HOME/Music"
 
 echo "=========================================="
 echo "  YouTube Playlist Audio Downloader"
@@ -72,11 +75,13 @@ echo
 # video title ("Artist ft. X - Song (Official Video)"), dropping junk like
 # "(Official Video)" or "[Lyrics]". Brackets after a feat, e.g. "(Remix)", go in
 # extra and stay with the song. At most 2 featured artists are kept, because
-# YouTube Music sometimes lists songwriters as artists. The @@@ separator joins
+# YouTube Music sometimes lists songwriters as artists. It can also repeat the
+# main artist in that list, so repeats are dropped from feat (ignoring case).
+# The @@@ separator joins
 # several fields into one string so a rule only matches when earlier rules
 # found nothing.
 NAMING=(
-    --parse-metadata '%(track|)s@@@%(artists.0|)s@@@%(artists.1\:3|)l:^(?P<song>.+)@@@(?P<main>.+)@@@(?P<feat>.+)?$'
+    --parse-metadata '%(track|)s@@@%(artists.0|)s@@@%(artists.1\:3|)l:(?i)^(?P<song>.+)@@@(?P<main>.+)@@@(?:(?P=main)(?:, |$))*(?P<feat>.+?)?(?:, (?P=main))*$'
     --parse-metadata '%(song|)s@@@%(title)s:^@@@(?P<main>.+?)\s+[-\u2013\u2014]\s+(?P<song>.+)$'
     --parse-metadata '%(song|)s@@@%(title)s:^@@@(?P<song>.+)$'
     --parse-metadata '%(feat|)s@@@%(main|)s:(?i)^@@@(?P<main>.+?)\s+(?:ft\.?|feat\.?|featuring)\s+(?P<feat>.+)$'
@@ -87,6 +92,8 @@ NAMING=(
     --parse-metadata '%(song)s%(extra& {}|)s:(?P<meta_title>.+)'
     --parse-metadata '%(main|)s%(feat& ft {}|)s:(?P<meta_artist>.+)'
 )
+
+mkdir -p "$OUT"
 
 "$YTDLP" \
     --yes-playlist \
@@ -99,7 +106,7 @@ NAMING=(
     --add-metadata \
     "${ARGS[@]}" \
     "${NAMING[@]}" \
-    -o "$DIR/%(playlist_title)s/%(song,title)s%(extra& {}|)s%(main& - {}|)s%(feat& ft {}|)s.%(ext)s" \
+    -o "$OUT/%(playlist_title)s/%(song,title)s%(extra& {}|)s%(main& - {}|)s%(feat& ft {}|)s.%(ext)s" \
     --progress \
     --no-continue \
     "$URL"
@@ -107,7 +114,7 @@ STATUS=$?
 
 echo
 if [ "$STATUS" -eq 0 ]; then
-    echo "Playlist audio download complete! Files saved to: $DIR"
+    echo "Playlist audio download complete! Files saved to: $OUT"
 else
     echo "Something went wrong. See the messages above for the reason."
 fi
