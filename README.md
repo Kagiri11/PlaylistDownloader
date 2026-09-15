@@ -89,7 +89,7 @@ chmod +x *.sh        # once
 
 Run without a URL to be prompted for one. Always quote URLs — `&` and `?` are special characters in the shell.
 
-Output folders and download records (`downloaded.txt`, `downloaded_audio.txt`) work the same as on Windows. To update yt-dlp, run `pipx upgrade yt-dlp`, or `./yt-dlp -U` for the standalone binary.
+On Linux, downloads are saved in your **Music folder** (`~/Music`) instead of the script folder, with the same file and playlist-folder names as on Windows. The download records (`downloaded.txt`, `downloaded_audio.txt`) stay next to the scripts. To update yt-dlp, run `pipx upgrade yt-dlp`, or `./yt-dlp -U` for the standalone binary.
 
 ## Where do my files go?
 
