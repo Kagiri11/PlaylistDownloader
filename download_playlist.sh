@@ -73,7 +73,7 @@ echo
     -f "bv*+ba/b" \
     --merge-output-format mp4 \
     "${ARGS[@]}" \
-    -o "$DIR/%(playlist_title)s/%(playlist_index)s - %(title)s.%(ext)s" \
+    -o "$DIR/%(playlist_title)s/%(title)s.%(ext)s" \
     --progress \
     --no-continue \
     "$URL"
