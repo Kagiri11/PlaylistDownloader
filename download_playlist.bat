@@ -66,7 +66,7 @@ echo.
     --merge-output-format mp4 ^
     --ffmpeg-location "%DIR%" ^
     %JSRT% ^
-    -o "%DIR%\%%(playlist_title)s\%%(playlist_index)s - %%(title)s.%%(ext)s" ^
+    -o "%DIR%\%%(playlist_title)s\%%(title)s.%%(ext)s" ^
     --progress ^
     --no-continue ^
     "%URL%"

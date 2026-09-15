@@ -7,7 +7,7 @@ Simple one-click Windows batch scripts for downloading YouTube videos and playli
 | File | What it does |
 |---|---|
 | `download.bat` | Downloads a **single video** in the best available quality as MP4 |
-| `download_playlist.bat` | Downloads a **whole playlist** as MP4 videos, numbered and organized into a folder named after the playlist |
+| `download_playlist.bat` | Downloads a **whole playlist** as MP4 videos, organized into a folder named after the playlist |
 | `download_playlist_audio.bat` | Downloads a **whole playlist as high-quality MP3 audio** with embedded cover art and metadata — great for music playlists |
 | `yt-dlp.exe` | The downloader engine (bundled so you don't have to find it yourself) |
 
@@ -94,8 +94,14 @@ Output folders and download records (`downloaded.txt`, `downloaded_audio.txt`) w
 ## Where do my files go?
 
 - **Single videos** → saved directly in this folder as `Title.mp4`
-- **Playlists (video)** → `<Playlist Name>\01 - Title.mp4`, `02 - Title.mp4`, ...
-- **Playlists (audio)** → `<Playlist Name>\01 - Title.mp3`, `02 - Title.mp3`, ... with album art embedded
+- **Playlists (video)** → `<Playlist Name>\Title.mp4`
+- **Playlists (audio)** → `<Playlist Name>\Song - Artist ft Featured Artist.mp3`, e.g. `Essence - Wizkid ft Tems.mp3`, with album art embedded
+
+### How audio files are named
+
+Song and artist names come from YouTube Music's track info when a video has it. Otherwise they are read from the video title, which works for the usual `Artist - Song (Official Video) ft. Other Artist` style. Extras like `(Official Video)`, `(Audio)` or `[Lyrics]` are removed, while things like `(Remix)` are kept. The same cleaned names are written into the MP3's title and artist tags. At most two featured artists are kept, because YouTube Music sometimes lists songwriters as artists.
+
+Titles that don't follow `Artist - Song` fall back to the cleaned title (with no artist). If an uploader writes `Song - Artist`, the two end up swapped.
 
 ## Skipping already-downloaded tracks
 

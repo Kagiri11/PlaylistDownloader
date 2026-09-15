@@ -59,8 +59,27 @@ echo Downloading playlist as high quality MP3 audio...
 echo URL: %URL%
 echo.
 
+:: Name files "Song - Artist ft Featured". Fields: song, main (artist), feat.
+:: Uses YouTube Music's track/artist data when present, otherwise parses the
+:: video title ("Artist ft. X - Song (Official Video)"), dropping junk like
+:: "(Official Video)" or "[Lyrics]". Brackets after a feat, e.g. "(Remix)", go in
+:: extra and stay with the song. At most 2 featured artists are kept, because
+:: YouTube Music sometimes lists songwriters as artists. The @@@ separator joins
+:: several fields into one string so a rule only matches when earlier rules
+:: found nothing.
+:: The last two rules write the cleaned names into the MP3 tags too.
+:: (%% is how a literal % is written inside a batch file.)
 "%DIR%\yt-dlp.exe" ^
     --yes-playlist ^
+    --parse-metadata "%%(track|)s@@@%%(artists.0|)s@@@%%(artists.1\:3|)l:^(?P<song>.+)@@@(?P<main>.+)@@@(?P<feat>.+)?$" ^
+    --parse-metadata "%%(song|)s@@@%%(title)s:^@@@(?P<main>.+?)\s+[-\u2013\u2014]\s+(?P<song>.+)$" ^
+    --parse-metadata "%%(song|)s@@@%%(title)s:^@@@(?P<song>.+)$" ^
+    --parse-metadata "%%(feat|)s@@@%%(main|)s:(?i)^@@@(?P<main>.+?)\s+(?:ft\.?|feat\.?|featuring)\s+(?P<feat>.+)$" ^
+    --replace-in-metadata song "(?i)\s*[(\[][^)\]]*\b(?:official|lyrics?|audio|video|visuali[sz]er|hd|hq|4k|mv)\b[^)\]]*[)\]]" "" ^
+    --parse-metadata "%%(feat|)s@@@%%(song)s:(?i)^@@@(?P<song>.+?)\s*[(\[]?\s*\b(?:ft\.?|feat\.?|featuring)\s+(?P<feat>[^()\[\]]+?)\s*[)\]]?\s*(?P<extra>[(\[].*)?$" ^
+    --replace-in-metadata song "(?i)\s*[(\[]\s*(?:ft\.?|feat\.?|featuring)\s[^)\]]*[)\]]" "" ^
+    --parse-metadata "%%(song)s%%(extra& {}|)s:(?P<meta_title>.+)" ^
+    --parse-metadata "%%(main|)s%%(feat& ft {}|)s:(?P<meta_artist>.+)" ^
     --download-archive "%DIR%\downloaded_audio.txt" ^
     -f "bestaudio/best" ^
     --extract-audio ^
@@ -70,7 +89,7 @@ echo.
     --add-metadata ^
     --ffmpeg-location "%DIR%" ^
     %JSRT% ^
-    -o "%DIR%\%%(playlist_title)s\%%(playlist_index)s - %%(title)s.%%(ext)s" ^
+    -o "%DIR%\%%(playlist_title)s\%%(song,title)s%%(extra& {}|)s%%(main& - {}|)s%%(feat& ft {}|)s.%%(ext)s" ^
     --progress ^
     --no-continue ^
     "%URL%"
