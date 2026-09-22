@@ -7,6 +7,7 @@ deno.exe
 ffmpeg
 ffprobe
 deno
+yt-dlp
 
 # Download records (machine-specific)
 downloaded.txt
@@ -22,3 +23,9 @@ downloaded_audio.txt
 *.webp
 *.png
 *.jpg
+
+# MusicSorter: local config holds API keys; cache and logs are machine-specific
+MusicSorter/config.ini
+MusicSorter/cache.sqlite
+MusicSorter/logs/
+MusicSorter/__pycache__/

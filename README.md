@@ -10,6 +10,7 @@ Simple one-click Windows batch scripts for downloading YouTube videos and playli
 | `download_playlist.bat` | Downloads a **whole playlist** as MP4 videos, organized into a folder named after the playlist |
 | `download_playlist_audio.bat` | Downloads a **whole playlist as high-quality MP3 audio** with embedded cover art and metadata — great for music playlists |
 | `yt-dlp.exe` | The downloader engine (bundled so you don't have to find it yourself) |
+| `MusicSorter/` | Sorts downloaded tracks into genre folders and renames them `Artist (ft Featured) - Title` (Linux, Python) — see [MusicSorter/README.md](MusicSorter/README.md) |
 
 ## Requirements
 
@@ -102,6 +103,24 @@ On Linux, downloads are saved in your **Music folder** (`~/Music`) instead of th
 Song and artist names come from YouTube Music's track info when a video has it. Otherwise they are read from the video title, which works for the usual `Artist - Song (Official Video) ft. Other Artist` style. Extras like `(Official Video)`, `(Audio)` or `[Lyrics]` are removed, while things like `(Remix)` are kept. The same cleaned names are written into the MP3's title and artist tags. At most two featured artists are kept, because YouTube Music sometimes lists songwriters as artists. If YouTube Music repeats the main artist in the featured list, the repeat is dropped.
 
 Titles that don't follow `Artist - Song` fall back to the cleaned title (with no artist). If an uploader writes `Song - Artist`, the two end up swapped.
+
+## Sorting the downloads (MusicSorter)
+
+Downloading is only half the job; `MusicSorter/` takes it from there. It picks
+up everything in `~/Music` (playlist subfolders included), identifies each track
+against Spotify / Last.fm / MusicBrainz, renames it to
+`Artist (ft Featured) - Title` — with a `[Extended]` tag for extended cuts —
+and files it into the right genre folder. Duplicates you already own go to
+`Ignored`, anything it isn't sure about goes to `_Review`.
+
+```
+cd MusicSorter
+cp config.example.ini config.ini     # set your paths + free API keys
+./run_dryrun.sh                      # preview: writes logs/report_*.csv, moves nothing
+./run_sort.sh                        # do it for real
+```
+
+Full details in [MusicSorter/README.md](MusicSorter/README.md).
 
 ## Skipping already-downloaded tracks
 
